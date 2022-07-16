@@ -8,7 +8,7 @@ Simple demonstration of getting a key and structuring API calls.
 
 Install the dependencies:
 
-* Python 2 (2.7.9+)
+* ~~Python 2 (2.7.9+)~~ Converted into Python 3
 * pip
 * virtualenv
 

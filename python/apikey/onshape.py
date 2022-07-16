@@ -5,7 +5,7 @@ onshape
 Provides access to the Onshape REST API
 '''
 
-import utils
+from . import utils
 
 import os
 import random
@@ -14,11 +14,11 @@ import json
 import hmac
 import hashlib
 import base64
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import datetime
 import requests
-from urlparse import urlparse
-from urlparse import parse_qs
+from urllib.parse import urlparse
+from urllib.parse import parse_qs
 
 __all__ = [
     'Onshape'
@@ -64,7 +64,7 @@ class Onshape():
                 stacks = json.load(f)
                 if stack in stacks:
                     self._url = stack
-                    self._access_key = stacks[stack]['access_key'].encode('utf-8')
+                    self._access_key = stacks[stack]['access_key'] #.encode('utf-8')
                     self._secret_key = stacks[stack]['secret_key'].encode('utf-8')
                     self._logging = logging
                 else:
@@ -104,7 +104,7 @@ class Onshape():
             - ctype (str, default='application/json'): HTTP Content-Type
         '''
 
-        query = urllib.urlencode(query)
+        query = urllib.parse.urlencode(query)
 
         hmac_str = (method + '\n' + nonce + '\n' + date + '\n' + ctype + '\n' + path +
                     '\n' + query + '\n').lower().encode('utf-8')
@@ -176,7 +176,7 @@ class Onshape():
         req_headers = self._make_headers(method, path, query, headers)
         if base_url is None:
             base_url = self._url
-        url = base_url + path + '?' + urllib.urlencode(query)
+        url = base_url + path + '?' + urllib.parse.urlencode(query)
 
         if self._logging:
             utils.log(body)
